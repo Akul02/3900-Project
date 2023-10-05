@@ -16,16 +16,16 @@ auth = Blueprint("auth", __name__)
 def register():
     args = request.get_json()
 
-    if not "name" in args or len(str(args["name"]).lower().strip()) == 0:
+    if "name" not in args or len(str(args["name"]).lower().strip()) == 0:
         raise ExpectedError("name field was missing", 400)
 
-    if not "email" in args or not fullmatch(
+    if "email" not in args or not fullmatch(
         r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)",
         str(args["email"]).lower().strip(),
     ):
         raise ExpectedError("email field is invalid", 400)
 
-    if not "password" in args or len(str(args["password"]).lower().strip()) < 8:
+    if "password" not in args or len(str(args["password"]).lower().strip()) < 8:
         raise ExpectedError("password field must be at least 8 characters long", 400)
 
     new_user_id = None
