@@ -36,7 +36,7 @@ def get_profile(student_id):
     )
 
 
-@student.route("profile", methods=["PUT"])
+@student.route("/profile", methods=["PUT"])
 @error_decorator
 @validate_decorator("json", student_modify_schema)
 def modify_profile(args):
