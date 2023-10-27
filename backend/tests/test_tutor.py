@@ -120,7 +120,7 @@ def test_get_valid(
 
 def test_modify_not_json(setup_test: FlaskClient):
     client = setup_test
-    resp = client.put("/tutor/profile/")
+    resp = client.put("/tutor/profile")
     assert resp.json == {"error": "content-type was not json or data was malformed"}
     assert resp.status_code == 415
 
@@ -136,7 +136,7 @@ def test_modify_invalid_args(
     tutor = generate_tutor
 
     # No user logged in
-    resp = client.put("/tutor/profile/", json={})
+    resp = client.put("/tutor/profile", json={})
     assert resp.json == {"error": "No user is logged in"}
     assert resp.status_code == 400
 
@@ -155,7 +155,7 @@ def test_modify_invalid_args(
     assert resp.status_code == 200
 
     # Non admin user tries modifying other user
-    resp = client.put("/tutor/profile/", json={"id": tutor.id})
+    resp = client.put("/tutor/profile", json={"id": tutor.id})
     custom_find_unique.assert_called_with(where={"id": tutor.id}, include=mocker.ANY)
     assert resp.json == {"error": "id field should not be supplied by a non admin user"}
     assert resp.status_code == 403
@@ -179,13 +179,13 @@ def test_modify_invalid_args(
     assert resp.status_code == 200
 
     # admin tries to modify with giving id param
-    resp = client.put("/tutor/profile/", json={})
+    resp = client.put("/tutor/profile", json={})
     assert resp.json == {"error": "id field was missing"}
     assert resp.status_code == 400
 
     custom_find_unique = None
     # admin modifies profile that doesnt exist
-    resp = client.put("/tutor/profile/", json={"id": "1"})
+    resp = client.put("/tutor/profile", json={"id": "1"})
     assert resp.json == {"error": "Profile does not exist"}
     assert resp.status_code == 404
 
@@ -213,7 +213,7 @@ def test_modify_invalid_email(
     assert resp.status_code == 200
 
     resp = client.put(
-        "/tutor/profile/",
+        "/tutor/profile",
         json={
             "email": "validemailmail.com",
         },
@@ -246,7 +246,7 @@ def test_modify_missing_args(
     assert resp.status_code == 200
 
     # missing fields
-    resp = client.put("/tutor/profile/", json={})
+    resp = client.put("/tutor/profile", json={})
     assert resp.status_code == 200
 
     resp = client.get(f"/tutor/{tutor.id}")
@@ -290,7 +290,7 @@ def test_modify_same_values(
     create_subject_mock = mocker.patch("tests.conftest.SubjectActions.create")
     # same values in fields
     resp = client.put(
-        "/tutor/profile/",
+        "/tutor/profile",
         json={
             "name": "Terry",
             "bio": "band 1 at HSC Maths",
@@ -351,7 +351,7 @@ def test_modify_different_values(
     update_tutor_mock = mocker.patch("tests.conftest.TutorActions.update")
     create_subject_mock = mocker.patch("tests.conftest.SubjectActions.create")
     resp = client.put(
-        "/tutor/profile/",
+        "/tutor/profile",
         json={
             "name": "Juan",
             "bio": "band 6 at HSC Maths",
@@ -563,7 +563,7 @@ def test_modify_time_available(
 
     # malformed timesAvailable
     resp = client.put(
-        "/tutor/profile/",
+        "/tutor/profile",
         json={
             "timesAvailable": [
                 {
@@ -582,7 +582,7 @@ def test_modify_time_available(
     update_tutor_mock = mocker.patch("tests.conftest.TutorActions.update")
     # valid modification
     resp = client.put(
-        "/tutor/profile/",
+        "/tutor/profile",
         json={
             "timesAvailable": [
                 {
@@ -620,7 +620,7 @@ def test_modify_time_available(
 
     # overlapping time availabilities
     resp = client.put(
-        "/tutor/profile/",
+        "/tutor/profile",
         json={
             "timesAvailable": [
                 {

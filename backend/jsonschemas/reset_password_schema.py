@@ -1,4 +1,4 @@
-from jsonschemas.reused_properties import id_prop, password_prop
+from jsonschemas.reused_properties import id_prop
 
 reset_password_schema = {
     "$id": "/jsonschemas/reset_password_schema",

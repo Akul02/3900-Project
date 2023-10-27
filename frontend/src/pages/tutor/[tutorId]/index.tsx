@@ -58,9 +58,11 @@ export default function TutorProfile() {
                 <MessageCircle className="w-5" />
                 Message Tutor
               </Button>
-              <Button variant="default" className="flex gap-2">
-                <Calendar className="w-5" />
-                Create Appointment
+              <Button asChild variant="default" className="flex gap-2">
+                <Link href={`/tutor/${tutorId}/schedule`}>
+                  <Calendar className="w-5" />
+                  Create Appointment
+                </Link>
               </Button>
             </>
           )}

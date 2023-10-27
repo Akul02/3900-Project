@@ -25,3 +25,14 @@ tutor search pages. Discussed workload distribution for Sprint 2.
 Assisted other team members with setup of project repo. Created DX scripts
 to enhance workflow, e.g. ./runBoth.sh ./runBackend.sh. 
 Pair programmed with Terry Thoroughgood to debug CSS. 
+
+Week 5 
+Attended standups. Assisted Terry Thoroughgood with his frontend tickets.
+Set up API specifications for sprint 2 with Daniel Wang. 
+Showcased sprint 1 demo to tutor. 
+Created child issues with Daniel Wang, and acceptance critea for sprint 2.
+Start coding frontend tasks for sprint 2, including student profile and search filters.
+
+Wweek 6
+It was flexi week so I took this week fairly chill.
+Fixed some bugs and worked on appointment creation.

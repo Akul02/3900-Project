@@ -252,7 +252,7 @@ def test_admin_modify_args(
 # No JSON
 def test_delete_not_json(setup_test: FlaskClient):
     client = setup_test
-    resp = client.delete("/student")
+    resp = client.delete("/student/")
     assert resp.json == {"error": "content-type was not json or data was malformed"}
     assert resp.status_code == 415
 
@@ -260,7 +260,7 @@ def test_delete_not_json(setup_test: FlaskClient):
 # No user logged in
 def test_delete_no_user(setup_test: FlaskClient):
     client = setup_test
-    resp = client.delete("/student", json={})
+    resp = client.delete("/student/", json={})
     assert resp.json == {"error": "No user is logged in"}
     assert resp.status_code == 401
 
@@ -287,17 +287,17 @@ def test_delete_student_login(
     )
 
     # Invalid id
-    resp = client.delete("/student", json={"id": "invalid"})
+    resp = client.delete("/student/", json={"id": "invalid"})
     assert resp.json == {"error": "id field should not be supplied by a non admin user"}
     assert resp.status_code == 403
 
     # Valid id
-    resp = client.delete("/student", json={"id": fake_student.id})
+    resp = client.delete("/student/", json={"id": fake_student.id})
     assert resp.json == {"error": "id field should not be supplied by a non admin user"}
     assert resp.status_code == 403
 
     # No id
-    resp = client.delete("/student", json={})
+    resp = client.delete("/student/", json={})
     assert resp.json == {"success": True}
     assert resp.status_code == 200
 
@@ -325,19 +325,19 @@ def test_delete_admin_login(
     )
 
     # No id
-    resp = client.delete("/student", json={})
+    resp = client.delete("/student/", json={})
     assert resp.json == {"error": "id field was missing"}
     assert resp.status_code == 400
 
     # Invalid id
-    resp = client.delete("/student", json={"id": "invalid"})
+    resp = client.delete("/student/", json={"id": "invalid"})
     assert resp.json == {"error": "Profile does not exist"}
     assert resp.status_code == 404
 
     delete_mock = mocker.patch("tests.conftest.UserActions.delete")
 
     # Valid id
-    resp = client.delete("/student", json={"id": fake_student.id})
+    resp = client.delete("/student/", json={"id": fake_student.id})
     delete_mock.assert_called()
 
     assert resp.json == {"success": True}

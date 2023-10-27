@@ -15,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { UseFormReturn, useFieldArray, useForm } from "react-hook-form"
+import { UseFormReturn, useForm } from "react-hook-form"
 import * as z from "zod"
 import { Input } from "@/components/ui/input"
 
@@ -28,7 +28,7 @@ import useUser from "@/hooks/useUser"
 import { useRouter } from "next/router"
 import {
   HTTPProfileService,
-  TutorSelfEditReqBody,
+  StudentSelfEditReqBody,
 } from "@/service/profileService"
 import { useQuery, useQueryClient } from "react-query"
 import { Textarea } from "@/components/ui/textarea"
@@ -37,7 +37,6 @@ import toast from "react-hot-toast"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
 import DeleteModal from "@/components/deleteModal"
-import EditOfferings from "@/components/editOfferings"
 import { fileToDataUrl } from "@/service/helpers"
 
 const authService = new HTTPAuthService()
@@ -66,24 +65,19 @@ const formSchema = z.object({
     ),
   location: z.string(),
   phoneNumber: z.string(),
-  courseOfferings: z.array(
-    z.object({
-      name: z.string(),
-    }),
-  ),
 })
 const profileService = new HTTPProfileService()
 export default function Edit() {
   const queryClient = useQueryClient()
   const router = useRouter()
   const { user } = useUser()
-  const tutorId = router.query.tutorId as string
-  const isOwnProfile = tutorId === user?.userId
+  const studentId = router.query.studentId as string
+  const isOwnProfile = studentId === user?.userId
   const [submitLoading, setSubmitLoading] = useState(false)
 
   const { data } = useQuery({
-    queryKey: ["tutors", tutorId],
-    queryFn: () => profileService.getTutorProfile(tutorId),
+    queryKey: ["students", studentId],
+    queryFn: () => profileService.getStudentProfile(studentId),
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
@@ -96,26 +90,13 @@ export default function Edit() {
 
   useEffect(() => {
     if (data) {
-      const courseObj: { name: string }[] = []
-
-      //push in courses from profile
-      data.courseOfferings.forEach((course) => {
-        courseObj.push({ name: course })
-      })
-
       form.setValue("name", data.name)
       form.setValue("bio", data.bio)
       form.setValue("location", data.location || "")
       form.setValue("phoneNumber", data.phoneNumber || "")
-      form.setValue("courseOfferings", courseObj)
       form.setValue("profilePicture", "")
     }
   }, [data, form])
-
-  const { fields, append, remove } = useFieldArray({
-    name: "courseOfferings",
-    control: form.control,
-  })
 
   if (!data) {
     return <div> loading screen </div>
@@ -127,41 +108,37 @@ export default function Edit() {
     setSubmitLoading(true)
 
     try {
-      values.courseOfferings.forEach((course) => {
-        courses.push(course.name)
-      })
-
-      //need to manipulate profile value
       let file = ""
       if (values.profilePicture.length != 0) {
         file = (await fileToDataUrl(values.profilePicture)) as string
       }
 
-      const tutorObj: TutorSelfEditReqBody = {
+      const studentObj: StudentSelfEditReqBody = {
         name: values.name,
         bio: values.bio,
         email: data?.email,
         profilePicture: file,
         location: values.location,
         phoneNumber: values.phoneNumber,
-        courseOfferings: courses,
-        timesAvailable: data?.timesAvailable,
       }
 
       if (values.phoneNumber.length === 0) {
-        tutorObj.phoneNumber = null
+        studentObj.phoneNumber = null
       }
       if (values.location.length === 0) {
-        tutorObj.location = null
+        studentObj.location = null
       }
       if (values.profilePicture.length === 0) {
-        tutorObj.profilePicture = null
+        studentObj.profilePicture = null
       }
-      const id = await profileService.setOwnTutorProfile(tutorObj)
+      const id = await profileService.setOwnStudentProfile(studentObj)
+      if (id.success) {
+        router.push(`/student/${studentId}/`)
+      }
     } catch (error) {
       toast.error(getErrorMessage(error))
     }
-    queryClient.invalidateQueries({ queryKey: ["tutors", tutorId] })
+    queryClient.invalidateQueries({ queryKey: ["students", studentId] })
     setSubmitLoading(false)
   }
   return (
@@ -226,12 +203,6 @@ export default function Edit() {
                   inputType="string"
                 />
               </div>
-              <EditOfferings
-                form={form}
-                fields={fields}
-                append={append}
-                remove={remove}
-              />
               <div className=" mt-4">
                 <LoadingButton
                   role="submit"
@@ -249,7 +220,7 @@ export default function Edit() {
         <Button asChild className="m-3 p-6" variant="secondary">
           <Link href={`../${user?.userId}`}> Back </Link>
         </Button>
-        <DeleteModal profileId={tutorId} />
+        <DeleteModal profileId={studentId} />
       </div>
     </div>
   )

@@ -32,6 +32,13 @@ password_prop = {
     },
 }
 
+account_type_prop = {
+    "accountType": {
+        "type": "string",
+        "pattern": "student|tutor|admin",
+    }
+}
+
 id_prop = {
     "id": {
         "type": "string",

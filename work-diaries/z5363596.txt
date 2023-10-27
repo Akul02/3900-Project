@@ -35,6 +35,14 @@ After tutor demo, planned sprint 2 in a pre-sprint meeting with the entire team,
 all user stories that were in the backlog, or leftover from the first sprint, with acceptance criterias and
 reducing all stories to be more granular/more atomic, instead of broad sweeping stories we had in the first sprint. 
 Then, reorganised api specs with Daniel Nguyen adding new routes as required and discussing the requirements 
-for all of them. Thereafter, work was appropriately assigned to all team members appropriately. I started refining
-our backend infrastructure more before 'properly' starting the 2nd sprint by replacing the basic `requirements.txt`
-package manager with a proper dependency manager in python poetry.
+for all of them. Thereafter, work was appropriately assigned to all team members appropriately. 
+
+Week 6
+I started refining our backend infrastructure more before 'properly' starting the 2nd sprint by replacing the basic 
+`requirements.txt` package manager with a proper dependency manager in python poetry. Then I overhauled our entire 
+testing system, alongside refactoring all the tests, with a mocking library to mock prisma queries so we no longer
+needed to deal with changing from a 'dev' to 'test' environment whenever we wanted to test and so, prisma queries
+weren't hampered by sqlite's limitations. Moreover, I refactored all routes where argument validation/parsing took place 
+with the jsonschema validation library, which made doing so much easier. Cutting down on code in routes, and introducing
+more consistent error handling and, consistently handling same validations the same way across multiple routes. Finally,
+I started and finishing writing the `student/appointments` route and, `admin/search` and `admin/create` routes.

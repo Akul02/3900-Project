@@ -17,7 +17,7 @@ tutor_search_schema = {
         "timeRange": {
             "type": "string",
         },
-        # courseOfferings is multiple key value pairs in a query string
+        # It's entered as a json dumped string
         "courseOfferings": {
             "type": "string",
         },

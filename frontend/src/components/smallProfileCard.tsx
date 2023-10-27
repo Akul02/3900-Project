@@ -1,11 +1,11 @@
 import { useQuery } from "react-query"
 import { HTTPProfileService } from "@/service/profileService"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Badge } from "./ui/badge"
 import { MapPin } from "lucide-react"
 import HeaderSeparator from "./headerSeparator"
 import Link from "next/link"
 import { Skeleton } from "./ui/skeleton"
+import SmartAvatar from "./smartAvatar"
 
 interface SmallProfileCard {
   id: string
@@ -16,7 +16,7 @@ export default function SmallProfileCard({
   id,
   accountType,
 }: SmallProfileCard) {
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: [`${accountType}s`, id],
     queryFn: async () => {
       return await profileService.getTutorProfile(id)
@@ -27,21 +27,7 @@ export default function SmallProfileCard({
       href={`/tutor/${id}`}
       className="flex w-screen max-w-md gap-5 rounded-md bg-background p-5 shadow transition hover:scale-[102%]"
     >
-      <Avatar className="h-32 w-32 text-4xl ">
-        {data ? (
-          <>
-            {data.profilePicture && <AvatarImage src={data.profilePicture} />}
-            <AvatarFallback>
-              {data.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")}
-            </AvatarFallback>
-          </>
-        ) : (
-          <Skeleton className="h-full w-full" />
-        )}
-      </Avatar>
+      <SmartAvatar name={data?.name} profilePicture={data?.profilePicture} />
       <div className="flex grow flex-col justify-between">
         {data ? (
           <>

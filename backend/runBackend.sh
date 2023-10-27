@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export POETRY_VIRTUALENVS_IN_PROJECT=true
+poetry_version="1.6.1"
 
 # Allows exit with one KeyboardInterrupt
 trap "exit 0" SIGINT
@@ -12,7 +13,7 @@ set +a
 
 python3 -m venv .venv
 .venv/bin/pip3 install -U pip setuptools
-.venv/bin/pip3 install poetry==1.6.1
+.venv/bin/pip3 install poetry==$poetry_version
 yes | .venv/bin/poetry cache clear PyPI --all
 yes | .venv/bin/poetry cache clear _default_cache --all
 

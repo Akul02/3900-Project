@@ -60,7 +60,7 @@ def get_profile(tutor_id):
     )
 
 
-@tutor.route("profile", methods=["PUT"])
+@tutor.route("/profile", methods=["PUT"])
 @error_decorator
 @validate_decorator("json", tutor_modify_schema)
 def modify_profile(args):

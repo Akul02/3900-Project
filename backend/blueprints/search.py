@@ -41,7 +41,6 @@ def tutor_search(args):
                 is not None
             )
 
-        # ? May need to change datetimes here to utc
         if "timeRange" in args and len(tutor.timesAvailable) != 0:
             try:
                 time_range = json.loads(args["timeRange"])
@@ -73,9 +72,12 @@ def tutor_search(args):
             valid &= rating_calc(tutor.ratings) >= float(args["rating"])
 
         if "courseOfferings" in args:
-            args_offerings = [
-                offerings.lower() for offerings in args.getlist("courseOfferings")
-            ]
+            try:
+                course_offerings = json.loads(args["courseOfferings"])
+            except json.decoder.JSONDecodeError:
+                raise ExpectedError("courseOfferings field must be valid JSON", 400)
+
+            args_offerings = [offerings.lower() for offerings in course_offerings]
             valid &= any(
                 offerings.name.lower() in args_offerings
                 for offerings in tutor.courseOfferings

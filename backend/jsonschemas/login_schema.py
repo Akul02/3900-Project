@@ -1,4 +1,4 @@
-from jsonschemas.reused_properties import email_prop, password_prop
+from jsonschemas.reused_properties import email_prop, password_prop, account_type_prop
 
 login_schema = {
     "$id": "/jsonschemas/login",
@@ -8,7 +8,7 @@ login_schema = {
     "properties": {
         **email_prop,
         **password_prop,
-        "accountType": {"type": "string", "pattern": "student|tutor|admin"},
+        **account_type_prop,
     },
     "required": ["email", "password", "accountType"],
 }

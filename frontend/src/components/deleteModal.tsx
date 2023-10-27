@@ -34,8 +34,11 @@ export default function DeleteModal({ profileId }: deleteModalInterface) {
   const deleteProfile = async () => {
     setSubmitLoading(true)
     try {
-      console.log(profileId)
-      const deletion = await profileService.deleteOwnTutorProfile(profileId)
+      //if student vs if tutor
+      const deletion =
+        user && user.userType === "student"
+          ? await profileService.deleteOwnStudentProfile(profileId)
+          : await profileService.deleteOwnTutorProfile(profileId)
     } catch {
       toast.error(getErrorMessage(Error))
     }

@@ -9,10 +9,10 @@ export default function Appointments() {
   const { data } = useQuery({
     queryKey: ["tutors", user?.userId as string, "timeAvailable"],
     queryFn: async () => {
-      const { timeAvailable } = await profileService.getTutorProfile(
+      const { timesAvailable } = await profileService.getTutorProfile(
         user?.userId as string,
       )
-      return timeAvailable.map((ta) => ({
+      return timesAvailable.map((ta) => ({
         start: new Date(ta.startTime),
         end: new Date(ta.endTime),
       }))
@@ -20,7 +20,7 @@ export default function Appointments() {
   })
   return (
     <div className="relative h-full w-full overflow-hidden p-16">
-      <WeeklyCalendar highlightedIntervals={data || []} />
+      <WeeklyCalendar interactiveIntervals={[]} />
     </div>
   )
 }

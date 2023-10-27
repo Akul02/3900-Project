@@ -45,3 +45,10 @@ Written code for the appointment routes
 Fixed bugs in the previous code (according to frontend)
 Learnt mocker and how to implement mocker tests
 Attempted to write new tests for appointments
+
+Week 7
+Attended regular (daily) standups
+Written code for modify and delete in the appointment route
+Fixed some extra bugs according to Postman and API specifications
+Implemented and completed all appointment mocker tests
+Started working on implementing validation checker

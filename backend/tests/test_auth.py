@@ -2,7 +2,6 @@ from pytest_mock import MockerFixture
 from pytest_mock.plugin import MockType
 from flask.testing import FlaskClient
 from prisma.models import User
-from tests.conftest import fake_admin
 
 
 def test_register_not_json(setup_test: FlaskClient):

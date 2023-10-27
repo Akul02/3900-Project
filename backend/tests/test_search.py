@@ -227,14 +227,18 @@ def test_search_only_course_offerings(
     find_many_tutors_mock.return_value = [tutor1, tutor2, tutor3]
 
     # only courseOfferings
-    resp = client.get("/searchtutor", query_string={"courseOfferings": ["math"]})
+    resp = client.get(
+        "/searchtutor", query_string={"courseOfferings": json.dumps(["math"])}
+    )
     find_many_tutors_mock.assert_called()
 
     assert len(resp.json["tutorIds"]) == 2
     assert resp.status_code == 200
     assert all(id in [tutor1.id, tutor3.id] for id in resp.json["tutorIds"])
 
-    resp = client.get("/searchtutor", query_string={"courseOfferings": ["science"]})
+    resp = client.get(
+        "/searchtutor", query_string={"courseOfferings": json.dumps(["science"])}
+    )
     find_many_tutors_mock.assert_called()
 
     assert len(resp.json["tutorIds"]) == 2
@@ -242,7 +246,8 @@ def test_search_only_course_offerings(
     assert all(id in [tutor2.id, tutor3.id] for id in resp.json["tutorIds"])
 
     resp = client.get(
-        "/searchtutor", query_string={"courseOfferings": ["math", "science"]}
+        "/searchtutor",
+        query_string={"courseOfferings": json.dumps(["math", "science"])},
     )
     find_many_tutors_mock.assert_called()
 
@@ -315,7 +320,7 @@ def test_search_args(
         query_string={
             "rating": 3,
             "location": "Tasmania",
-            "courseOfferings": ["science", "math"],
+            "courseOfferings": json.dumps(["science", "math"]),
             "timeRange": json.dumps(
                 {
                     "startTime": (datetime.now() + timedelta(hours=1)).isoformat(),

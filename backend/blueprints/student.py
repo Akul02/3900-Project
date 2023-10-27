@@ -74,7 +74,7 @@ def modify_profile(args):
     return jsonify({"success": True}), 200
 
 
-@student.route("", methods=["DELETE"])
+@student.route("/", methods=["DELETE"])
 @error_decorator
 def delete_profile():
     args = request.get_json()
