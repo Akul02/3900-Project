@@ -42,3 +42,14 @@ Attended standups, pairr programmed with Terry Thoroughgood and worked through m
 frontend tickets. 
 Refactored weekly schedule calendar to be more extensible through inversion of control. 
 Created various calendar and appointment elements and functionality through new calendar system. 
+
+Week 8
+Attended standups, created video demo of product for client demo.
+Received client feedback, was positive.
+Continued frontend work and worked with Daniel Wang to define new API specs.
+
+Week 9
+Attended standups. ASsisted Terry Thoroughgood with frontend debugging.
+Created messaging UI and implemented optimistic UI. 
+Created editable appointments from tutor view. 
+Prepared for the last demo.
